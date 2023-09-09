@@ -1,5 +1,6 @@
-﻿using HR.LeaveManagment.Application.DTOs.LeaveAllocations;
-using HR.LeaveManagment.Application.Features.LeaveTypes.Requests.Commands;
+﻿using HR.LeaveManagement.Application.DTOs.LeaveAllocations;
+using HR.LeaveManagement.Application.Features.LeaveTypes.Requests.Commands;
+using HR.LeaveManagement.Application.Responses;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -7,10 +8,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HR.LeaveManagment.Application.Features.LeaveAllocations.Requests.Commands
+namespace HR.LeaveManagement.Application.Features.LeaveAllocations.Requests.Commands
 {
-    public class CreateLeaveAllocationCommand: IRequest<int>
+    public class CreateLeaveAllocationCommand: IRequest<BaseCommandResponse>
     {
-        public LeaveAllocationDto LeaveAllocationDto { get; set; }
+        public CreateLeaveAllocationDto CreateLeaveAllocationDto { get; set; }
     }
 }

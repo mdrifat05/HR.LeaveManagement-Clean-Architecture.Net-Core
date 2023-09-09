@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HR.LeaveManagment.Application.DTOs.LeaveTypes
+namespace HR.LeaveManagement.Application.DTOs.LeaveTypes
 {
-    public class CreateLeaveTypeDto
+    public class CreateLeaveTypeDto : ILeaveTypeDto
     {
         public string Name { get; set; }
         public int DefaultDays { get; set; }

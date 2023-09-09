@@ -1,13 +1,14 @@
-﻿using HR.LeaveManagment.Application.DTOs.Common;
+﻿using HR.LeaveManagement.Application.DTOs.Common;
+using HR.LeaveManagement.Application.DTOs.LeaveAllocations.Validators;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HR.LeaveManagment.Application.DTOs.LeaveAllocations
+namespace HR.LeaveManagement.Application.DTOs.LeaveAllocations
 {
-    public class CreateLeaveAllocationDto
+    public class CreateLeaveAllocationDto: ILeaveAllocationDto
     {
         public int NumberOfDays { get; set; }
         public int LeaveTypeId { get; set; }

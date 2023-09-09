@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using HR.LeaveManagment.Application.DTOs.LeaveTypes;
-using HR.LeaveManagment.Application.Features.LeaveTypes.Requests.Queries;
-using HR.LeaveManagment.Application.Persistence.Contracts;
+using HR.LeaveManagement.Application.DTOs.LeaveTypes;
+using HR.LeaveManagement.Application.Features.LeaveTypes.Requests.Queries;
+using HR.LeaveManagement.Application.Persistence.Contracts;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HR.LeaveManagment.Application.Features.LeaveTypes.Handlers.Queries
+namespace HR.LeaveManagement.Application.Features.LeaveTypes.Handlers.Queries
 {
     public class GetLeaveTypeListRequestHandler : IRequestHandler<GetLeaveTypeListRequest, List<LeaveTypeDto>>
     {

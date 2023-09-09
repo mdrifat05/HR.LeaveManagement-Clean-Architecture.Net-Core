@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
-using HR.LeaveManagment.Application.Features.LeaveRequests.Requests.Commands;
-using HR.LeaveManagment.Application.Persistence.Contracts;
+using HR.LeaveManagement.Application.DTOs.LeaveRequests.Validators;
+using HR.LeaveManagement.Application.Exceptions;
+using HR.LeaveManagement.Application.Features.LeaveRequests.Requests.Commands;
+using HR.LeaveManagement.Application.Persistence.Contracts;
+using HR.LeaveManagement.Domain;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HR.LeaveManagment.Application.Features.LeaveRequests.Handlers.Commands
+namespace HR.LeaveManagement.Application.Features.LeaveRequests.Handlers.Commands
 {
     public class UpdateLeaveRequestCommandHandler : IRequestHandler<UpdateLeaveRequestCommand, Unit>
     {
@@ -22,10 +25,21 @@ namespace HR.LeaveManagment.Application.Features.LeaveRequests.Handlers.Commands
         }
         public async Task<Unit> Handle(UpdateLeaveRequestCommand request, CancellationToken cancellationToken)
         {
-            var leaveRequest = await _leaveRequestRepository.Get(request.Id);
-            if (request.LeaveRequestDto!=null)
+            var validator = new UpdateLeaveRequestDtoValidator(_leaveRequestRepository);
+            var validationResult = await validator.ValidateAsync(request.UpdateLeaveRequestDto);
+            if (validationResult.IsValid == false)
             {
-                _mapper.Map(request.LeaveRequestDto, leaveRequest);
+                throw new ValidationException(validationResult);
+            }
+
+            var leaveRequest = await _leaveRequestRepository.Get(request.Id);
+            if (leaveRequest == null)
+            {
+                throw new NotFoundException(nameof(leaveRequest), request.Id);
+            }
+            if (request.UpdateLeaveRequestDto != null)
+            {
+                _mapper.Map(request.UpdateLeaveRequestDto, leaveRequest);
                 await _leaveRequestRepository.Update(leaveRequest);
             }
             else if(request.ChangeLeaveRequestApprovalDto!=null)

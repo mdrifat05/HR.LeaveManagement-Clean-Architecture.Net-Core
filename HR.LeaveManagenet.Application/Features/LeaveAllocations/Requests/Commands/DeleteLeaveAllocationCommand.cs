@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HR.LeaveManagment.Application.Features.LeaveAllocations.Requests.Commands
+namespace HR.LeaveManagement.Application.Features.LeaveAllocations.Requests.Commands
 {
     public class DeleteLeaveAllocationCommand: IRequest
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HR.LeaveManagment.Application.DTOs.Common
+namespace HR.LeaveManagement.Application.DTOs.Common
 {
     public class BaseDto
     {

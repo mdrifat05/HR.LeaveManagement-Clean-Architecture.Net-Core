@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HR.LeaveManagment.Application
+namespace HR.LeaveManagement.Application
 {
     public static class ApplicationServicesRegistration
     {

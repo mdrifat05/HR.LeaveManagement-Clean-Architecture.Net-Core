@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using HR.LeaveManagment.Application.DTOs.LeaveAllocations;
-using HR.LeaveManagment.Application.Features.LeaveAllocations.Requests.Queries;
-using HR.LeaveManagment.Application.Persistence.Contracts;
+using HR.LeaveManagement.Application.DTOs.LeaveAllocations;
+using HR.LeaveManagement.Application.Features.LeaveAllocations.Requests.Queries;
+using HR.LeaveManagement.Application.Persistence.Contracts;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HR.LeaveManagment.Application.Features.LeaveAllocations.Handlers.Queries
+namespace HR.LeaveManagement.Application.Features.LeaveAllocations.Handlers.Queries
 {
     public class GetLeaveAllocationDetailRequestHandler : IRequestHandler<GetLeaveAllocationDetailRequest, LeaveAllocationDto>
     {

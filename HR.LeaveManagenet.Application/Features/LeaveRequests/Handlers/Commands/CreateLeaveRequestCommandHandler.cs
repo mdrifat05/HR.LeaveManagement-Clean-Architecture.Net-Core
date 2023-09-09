@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
-using HR.LeaveManagment.Application.Features.LeaveRequests.Requests.Commands;
-using HR.LeaveManagment.Application.Persistence.Contracts;
-using HR.LeaveManagment.Domain;
+using HR.LeaveManagement.Application.DTOs.LeaveRequests.Validators;
+using HR.LeaveManagement.Application.Exceptions;
+using HR.LeaveManagement.Application.Features.LeaveRequests.Requests.Commands;
+using HR.LeaveManagement.Application.Persistence.Contracts;
+using HR.LeaveManagement.Application.Responses;
+using HR.LeaveManagement.Domain;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -9,9 +12,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HR.LeaveManagment.Application.Features.LeaveRequests.Handlers.Commands
+namespace HR.LeaveManagement.Application.Features.LeaveRequests.Handlers.Commands
 {
-    public class CreateLeaveRequestCommandHandler: IRequestHandler<CreateLeaveRequestCommand, int>
+    public class CreateLeaveRequestCommandHandler: IRequestHandler<CreateLeaveRequestCommand, BaseCommandResponse>
     {
         private readonly ILeaveRequestRepository _leaveRequestRepository;
         private readonly IMapper _mapper;
@@ -22,11 +25,26 @@ namespace HR.LeaveManagment.Application.Features.LeaveRequests.Handlers.Commands
             _mapper = mapper;
         }
 
-        public async Task<int> Handle(CreateLeaveRequestCommand request, CancellationToken cancellationToken)
+        public async Task<BaseCommandResponse> Handle(CreateLeaveRequestCommand request, CancellationToken cancellationToken)
         {
-            var leaveRequest = _mapper.Map<LeaveRequest>(request.CreateLeaveRequestDto);
-            leaveRequest = await _leaveRequestRepository.Add(leaveRequest);
-            return leaveRequest.Id;
+            var response = new BaseCommandResponse();
+            var validator = new CreateLeaveRequestDtoValidator(_leaveRequestRepository);
+            var validationResult = await validator.ValidateAsync(request.CreateLeaveRequestDto);
+            if (validationResult.IsValid == false)
+            {
+                response.Success = false;
+                response.Message = "Leave Request Failed!";
+                response.Errors = validationResult.Errors.Select(x => x.ErrorMessage).ToList();
+            }
+            else
+            {
+                var leaveRequest = _mapper.Map<LeaveRequest>(request.CreateLeaveRequestDto);
+                leaveRequest = await _leaveRequestRepository.Add(leaveRequest);
+                response.Success = true;
+                response.Message = "Request Created Successfully";
+                response.Id = leaveRequest.Id;
+            }
+            return response;   
         }
     }
 }

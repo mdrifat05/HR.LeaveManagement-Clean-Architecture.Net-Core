@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
-using HR.LeaveManagment.Application.Features.LeaveTypes.Requests.Commands;
-using HR.LeaveManagment.Application.Persistence.Contracts;
+using HR.LeaveManagement.Application.DTOs.LeaveTypes.Validators;
+using HR.LeaveManagement.Application.Exceptions;
+using HR.LeaveManagement.Application.Features.LeaveTypes.Requests.Commands;
+using HR.LeaveManagement.Application.Persistence.Contracts;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HR.LeaveManagment.Application.Features.LeaveTypes.Handlers.Commands
+namespace HR.LeaveManagement.Application.Features.LeaveTypes.Handlers.Commands
 {
     public class UpdateLeaveTypeCommandHandler : IRequestHandler<UpdateLeaveTypeCommand, Unit>
     {
@@ -21,8 +23,18 @@ namespace HR.LeaveManagment.Application.Features.LeaveTypes.Handlers.Commands
         }
         public async Task<Unit> Handle(UpdateLeaveTypeCommand request, CancellationToken cancellationToken)
         {
-            var leaveType = await _leaveTypeRepository.Get(request.LeaveTypeDto.Id);
-            _mapper.Map(request.LeaveTypeDto, leaveType);
+            var validator = new UpdateLeaveTypeDtoValidator();
+            var validationResult = await validator.ValidateAsync(request.UpdateLeaveTypeDto);
+            if(validationResult.IsValid == false) 
+            {
+                throw new ValidationException(validationResult);
+            }
+            var leaveType = await _leaveTypeRepository.Get(request.UpdateLeaveTypeDto.Id);
+            if (leaveType == null)
+            {
+                throw new NotFoundException(nameof(leaveType), request.UpdateLeaveTypeDto.Id);
+            }
+            _mapper.Map(request.UpdateLeaveTypeDto, leaveType);
             await _leaveTypeRepository.Update(leaveType);
             return Unit.Value;
         }
